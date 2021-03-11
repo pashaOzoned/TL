@@ -1,0 +1,198 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+{% load static %}
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Project</title>
+        <style>
+            body {
+                font: 0.8em Arial, Helvetica, sans-serif; /* Шрифт на веб-странице */
+                background: #CBC5A9; /* Цвет фона */
+                color: #ffe; /* Цвет текста */
+            }
+
+            a{
+                text-decoration: underline;
+                color: white;
+            }
+
+            button{
+                width:100%;
+                height: 100%;
+            }
+
+            #header {
+                font-size: 2.2em; /* Размер текста */
+                text-align: center; /* Выравнивание по центру */
+                padding: 5px; /* Отступы вокруг текста */
+                background: #960101; /* Цвет фона шапки */
+                display: flex;
+                justify-content: space-between;
+            }
+
+            #auth_btn{
+                display:flex;
+                flex-direction: row;
+                justify-content: space-between;
+            }
+
+            #non_auth_btn{
+                display:flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                margin: 5px;
+            }
+
+            .head_div {
+                display:flex;
+                float:right;
+            }
+
+            #container {
+                margin: 0 auto; /* Выравниваем по центру */
+                background: #FCE600; /* Цвет колонок */
+                width: 100%;
+                height: 100%;
+            }
+
+
+            #diz, #like {
+                float: left; width:20%;
+            }
+
+            #main
+            {
+                display:flex;
+            }
+
+            .buttons{
+                width: 100%;
+                height: 100%;
+                background: transparent;
+                border: none !important;
+                font-size:0;
+            }
+
+            #like {
+                float:right;
+            }
+
+            #content {
+                background: #ffcc00;
+                width:60%;
+                text-align: center;
+            }
+
+            #footer {
+                clear: both; /* Отменяем действие float */
+                padding: 5px; /* Отступы вокруг текста */
+                background: #960101; /* Цвет фона подвала */
+            }
+
+            form {
+                height: 100%;
+            }
+
+            #username{
+                font-family: cursive;
+                font-size: 20px;
+                font-style: oblique;
+                font-weight: 600;`
+            }
+
+            #btns{
+                border-radius: 5px;
+                font-family: monospace;
+            }
+            #tmp{
+                width: 20%;
+                text-align: center;
+                background-color: #fff0f0;
+                border: 6px solid #9601018f;
+                border-radius: 25px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="container">
+            <div id="header">
+                Like tinder
+                {% if auth == 1 %}
+                    <div id='auth_btn' style="display:flex; float:right;">
+                        <form action="signOut/">
+                            <input id='btns' type="submit" value="Sign Out">
+                        </form>
+                        <form action="addPhoto/">
+                            <input id='btns' type="submit" value="Add photo">
+                        </form>
+                        Hi, <a href="profile/">{{current_user}}</a>
+                    </div>
+                {% else %}
+                    <div id='non_auth_btn' style="display:flex; float:right;">
+                        <form action="signUp/">
+                            <input id='btns' type="submit" value="Sign Up">
+                        </form>
+                        <form action="signIn/">
+                            <input id='btns' type="submit" value="Sign In">
+                        </form>
+                    </div>
+                {% endif %}
+            </div>
+            {% if auth == 1 %}
+            <div id = "main">
+                <!-- кнопка слева-->
+                {% if emptyError != 1%}
+                <div id="diz">
+                    <form action="../diz/" method="POST">
+                        {% csrf_token %}
+                        <button class="buttons">
+                            <img src="{% static "images/diz.png" %}">
+                        </button>
+                    </form>
+                </div>
+                <div id="content">
+                    <p id="username">{{user.username}}</p>
+                    <img  src="{{photo.url}}">
+                </div>
+                <!-- кнопка справа-->
+                <div id="like">
+                    <form action="../like/" method="POST">
+                        {% csrf_token %}
+                        <input type = 'hidden' name="id" value='{{photo.id}}'/>
+
+                        <button class="buttons" value = "{{id}}">
+                            <img src="{% static "images/like.png" %}">
+                        </button>
+                    </form>
+                </div>
+                {% else %}
+                <div id="tmp" style="margin: auto;">
+                    <p style="font-size: 15px; color:red;">Фотографий пока нет</p>
+                    <a style="font-size: 10px; color:red;" href="addingSomePhotos/">Добавить несколько ?</a>
+                </div>
+                {% endif %}
+
+            </div>
+
+            <div id="footer">&copy; Pavel Homanau</div>
+
+        </div>
+    {% if current_user.counter >= limit %}
+        <div id="tmp">
+            <style>
+                #tmp{
+                    width: 20%;
+                    text-align: center;
+                    background-color: #fff0f0;
+                    border: 6px solid #9601018f;
+                    border-radius: 25px;
+                }
+            </style>
+            <p style="font-size: 20px; color:red;">У вас закончились свайпы</p>
+        </div>
+    {% endif%}
+    {% endif %}
+    </body>
+</html>

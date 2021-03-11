@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            font: 0.8em Arial, Helvetica, sans-serif; /* Шрифт на веб-странице */
+            background: #CBC5A9; /* Цвет фона */
+            color: #ffe; /* Цвет текста */
+        }
+
+        a{
+            text-decoration: underline;
+            color: white;
+        }
+
+        #header {
+            font-size: 2.2em; /* Размер текста */
+            text-align: center; /* Выравнивание по центру */
+            padding: 5px; /* Отступы вокруг текста */
+            background: #960101; /* Цвет фона шапки */
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .head_div {
+            display:flex;
+            float:right;
+        }
+
+        #container {
+            margin: 0 auto; /* Выравниваем по центру */
+            background: #FCE600; /* Цвет колонок */
+            width: 100%;
+            height: 100%;
+        }
+
+        #main
+        {
+            display:flex;
+        }
+
+        .buttons{
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            border: none !important;
+            font-size:0;
+        }
+
+        #content {
+            background: #ffcc00;
+            width:100%;
+            text-align: center;
+        }
+
+        #footer {
+            clear: both; /* Отменяем действие float */
+            padding: 5px; /* Отступы вокруг текста */
+            background: #960101; /* Цвет фона подвала */
+        }
+
+    </style>
+</head>
+<body>
+    <div id="container">
+    <div id="header">
+        Like tinder
+    </div>
+    <div id = "main">
+
+        <div id="content">
+            <form method="POST" action="../profile/">
+                {% csrf_token %}
+                <p>
+                    <label>email</label><br>
+                    <input type="email" name="email" value="{{user.email}}"/>
+                </p>
+                <p>
+                    <label>old password</label><br>
+                    <input type="password" name="old_password" autocomplete="off"/>
+                </p>
+                <p>
+                    <label>new password</label><br>
+                    <input type="password" name="new_password" autocomplete="off"/>
+                </p>
+                <p>
+                    <label>lat</label><br>
+                    <input type="text" name="lat" autocomplete="off" value="52.42"/>
+                </p>
+                <p>
+                    <label>lng</label><br>
+                    <input type="text" name="lng" autocomplete="off" value="30.97"/>
+                </p>
+                {% if user.type_of_account == 2 %}
+                <p>
+                    <label>distance of search</label><br>
+                    <input type="number" name="distance" autocomplete="off" min="1" max="100" value="20"/>
+                </p>
+                {%endif %}
+                <p>
+                    <label>type_of_account(for test)</label><br>
+                    <input type="number" name="type_of_account" value="{{user.type_of_account}}"/>
+                </p>
+                <input type="submit" value="Сохранить изменения" >
+            </form>
+        </div>
+    </div>
+
+    <div id="footer">&copy; Pavel Homanau <a href="/">Back</a></div>
+</body>
+</html>
